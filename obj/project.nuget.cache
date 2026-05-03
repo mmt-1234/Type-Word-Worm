@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "TyAQwgCrNXg=",
+  "success": true,
+  "projectFilePath": "/Users/parkjunhyoung/Documents/CS220/typewordworm/typewordworm.fsproj",
+  "expectedPackageFiles": [
+    "/Users/parkjunhyoung/.nuget/packages/fsharp.core/10.0.103/fsharp.core.10.0.103.nupkg.sha512"
+  ],
+  "logs": []
+}
