@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<linker>
+  <assembly fullname="typewordworm.Tests">
+    <resource name="FSharpSignatureData.typewordworm.Tests" action="remove"></resource>
+    <resource name="FSharpSignatureCompressedData.typewordworm.Tests" action="remove"></resource>
+    <resource name="FSharpSignatureDataB.typewordworm.Tests" action="remove"></resource>
+    <resource name="FSharpSignatureCompressedDataB.typewordworm.Tests" action="remove"></resource>
+    <resource name="FSharpOptimizationData.typewordworm.Tests" action="remove"></resource>
+    <resource name="FSharpOptimizationCompressedData.typewordworm.Tests" action="remove"></resource>
+    <resource name="FSharpOptimizationDataB.typewordworm.Tests" action="remove"></resource>
+    <resource name="FSharpOptimizationCompressedDataB.typewordworm.Tests" action="remove"></resource>
+    <resource name="FSharpOptimizationInfo.typewordworm.Tests" action="remove"></resource>
+    <resource name="FSharpSignatureInfo.typewordworm.Tests" action="remove"></resource>
+  </assembly>
+</linker>
