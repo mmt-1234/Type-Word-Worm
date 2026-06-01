@@ -75,6 +75,51 @@ let renderGame (state: GameState) =
 
     render()
 
+let showStartScreen () =
+    Console.Clear()
+    Console.ForegroundColor <- ConsoleColor.Cyan
+
+    let titleArt = [
+        """ _____ _   _ ____  _____   __        _____  ____  ____     __        _____  ____  __  __ """
+        """| ____| | | |  _ \| ____|  \ \      / / _ \|  _ \|  _ \   \ \      / / _ \|  _ \|  \/  |"""
+        """|  _| | | | | |_) |  _|    \ \ /\ / / | | | |_) | | | |   \ \ /\ / / | | | |_) | |\/| |"""
+        """| |___| |_| |  _ <| |___    \ V  V /| |_| |  _ <| |_| |    \ V  V /| |_| |  _ <| |  | |"""
+        """|_____|\___/|_| \_\_____|    \_/\_/  \___/|_| \_\____/      \_/\_/  \___/|_| \_\_|  |_|"""
+    ]
+
+    let startY = 3
+    for i in 0 .. titleArt.Length - 1 do
+        safeSetCursorPosition (max 0 ((Console.WindowWidth - titleArt.[i].Length) / 2)) (startY + i)
+        Console.Write(titleArt.[i])
+
+    Console.ForegroundColor <- ConsoleColor.Yellow
+    safeSetCursorPosition 20 10
+    Console.Write("=== How to Play ===")
+
+    Console.ForegroundColor <- ConsoleColor.White
+    let rules = [
+        "  Words spawn at the right side and move left."
+        "  Type the exact word and press [Enter] to fire an arrow."
+        "  The arrow travels right and destroys the word on contact."
+        "  If any word reaches the Dead Line (x=5), it's GAME OVER."
+        "  Score = word_length x spawn_rate at time of elimination."
+    ]
+    for i in 0 .. rules.Length - 1 do
+        safeSetCursorPosition 15 (12 + i)
+        Console.Write(rules.[i])
+
+    Console.ForegroundColor <- ConsoleColor.DarkGray
+    safeSetCursorPosition 15 19
+    Console.Write("[Backspace] Delete last character    [ESC] Quit during game")
+
+    Console.ForegroundColor <- ConsoleColor.Green
+    safeSetCursorPosition 28 22
+    Console.Write("Press any key to start...")
+
+    Console.ResetColor()
+    Console.ReadKey(true) |> ignore
+    Console.Clear()
+
 let showGameOverScreen (score: int) (elapsed: float) =
     Console.Clear()
     Console.ForegroundColor <- ConsoleColor.Red
@@ -98,15 +143,20 @@ let showGameOverScreen (score: int) (elapsed: float) =
     safeSetCursorPosition 25 15
     Console.Write(sprintf "SURVIVED TIME: %.1f seconds" elapsed)
 
-    Console.ForegroundColor <- ConsoleColor.Gray
-    safeSetCursorPosition 25 18
-    Console.Write("Press ESC to quit...")
+    Console.ForegroundColor <- ConsoleColor.Green
+    safeSetCursorPosition 22 17
+    Console.Write("Press [Y] to play again or [ESC] to quit")
 
     while Console.KeyAvailable do
         Console.ReadKey(true) |> ignore
 
+    let mutable result = false
     let mutable waiting = true
     while waiting do
         let key = Console.ReadKey(true)
         if key.Key = ConsoleKey.Escape then
             waiting <- false
+        elif key.KeyChar = 'y' || key.KeyChar = 'Y' then
+            result <- true
+            waiting <- false
+    result

@@ -2,8 +2,19 @@
 bin/
 obj/
 
+# Visual Studio / IDE
 *.user
 *.suo
+.vs/
+.ionide/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Claude Code
 .claude/
 
+# Local-only project spec docs
 CS 20200 2026 1 Notice.pdf

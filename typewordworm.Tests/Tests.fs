@@ -2,7 +2,9 @@ module Tests
 
 open System
 open Xunit
-open Program
+open GameTypes
+open GameConfig
+open GameLogic
 
 // ===== Speed Formula: v = 3.0 + (elapsed / 10.0) * 0.5 =====
 

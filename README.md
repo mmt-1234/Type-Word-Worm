@@ -1,99 +1,106 @@
-# CS20200 Programming Principles - Term Project
-# Project Title: Type Word Worm
+# Type Word Worm
+CS-20200 Programming Principles — Term Project, Spring 2026
+**Student ID:** 20250318 Junhyoung Park
 
-A premium, CLI-based typing game implemented in **F#** and **.NET 10**. English words spawn from the right side of the screen and travel leftward. Your objective is to type the words accurately and press Enter to shoot arrow projectiles that eliminate them before they reach the deadline!
-
----
-
-## 🎮 Game Overview
-
-In **Type Word Worm**, you must defend your boundary from the invading worms (words). 
-
-- **Spawn Point:** Words appear at the right boundary ($x = 80$) at a random vertical position.
-- **Movement:** Words move right-to-left
-- **Scoring:** Accurately typing a word and pressing **Enter** fires an arrow projectile (`---->`) from the left boundary ($x = 5$). When the projectile reaches the word, the word is eliminated in a circular particle explosion, and points are awarded!
-- **Game Over:** A "Dead Line" is established at the left boundary ($x = 5$). If any character of an active word crosses this deadline, the game immediately terminates.
+A CLI-based typing game written in F# and .NET 10. Words crawl in from the right side of the screen. Type each word exactly and press Enter to blast it with an arrow before it crosses the deadline on the left.
 
 ---
 
-## 🚀 How to Build and Run
+## Getting Started
 
-### Prerequisites
-- **.NET 10.0 SDK** must be installed on your machine. You can verify your installation by running:
-  ```bash
-  dotnet --version
-  ```
+**Prerequisites:** .NET 10.0 SDK — verify with `dotnet --version`
 
-### Steps to Run
-1. Clone my Github Repository:
-   ```bash
-   git clone https://github.com/mmt-1234/Type-Word-Worm
-   ```
-2. Build the project:
-   ```bash
-   dotnet build
-   ```
-3. Run the game:
-   ```bash
-   dotnet run
-   ```
-4. To play, make sure your terminal window is expanded to at least **85 columns** and **25 rows** for the best visual experience. Resize your terminal window for same experience. 
+```bash
+git clone https://github.com/mmt-1234/Type-Word-Worm
+cd Type-Word-Worm
+dotnet run
+```
+
+
+> Expand your terminal to at least **85 columns × 25 rows** before launching.
 
 ---
 
-## 🛠️ Key Game Mechanics & Technical Specifications
+## How to Play
 
-### 1. Dynamic Word Generation & Difficulty Scaling
-- **Spawning:** Words are selected randomly from a predefined dictionary of common English words and programming terms.
-- **Spawn Rate ($R$):** Starts at 0.5 words per second and increases over time.
-  $$R = 0.5 + \frac{\text{Time}}{20} \times 0.5$$
-- **Spawn Interval:** A new word spawns every $1 / R$ seconds.
+When the game starts, a title screen shows the rules and key bindings. Press any key to begin.
 
-### 2. Movement and Pathing (Linear)
-- **Horizontal Velocity ($v$):** Words move at a constant horizontal velocity $v$ which scales with time:
-  $$v = 3 + \frac{\text{Time}}{10} \times 0.5 \text{ (characters per second)}$$
-- **Linear Pathing:** The vertical position ($y$) of each word remains constant at its initial random spawn height:
-  $$y = y_{\text{spawn}}$$
+| Key | Action |
+|---|---|
+| Letters | Add to input buffer |
+| Backspace | Delete last character |
+| Enter | Fire arrow at the matched word |
+| ESC | Quit |
 
-### 3. Projectiles & Particle Effects
-- **Arrow Projectiles (`---->`):** When you successfully type a word and press **Enter**, a projectile spawns at the left boundary ($x = 5$) at the same height as the target word.
-- **Velocity:** Projectiles travel rightward at $2v$ (double the word's speed).
-- **Collision:** When the projectile reaches the word, a beautiful, multi-frame circular particle explosion triggers at the collision coordinates.
-- **Score Calculation ($\Delta S$):** Points awarded upon elimination:
-  $$\Delta S = L \times R$$
-  *(where $L$ is the character length of the word, and $R$ is the current spawn rate)*
+Type a word shown on screen exactly, then press **Enter**. An arrow (`---->`) launches from the left and travels right until it hits the word, destroying it. If any word reaches the **Dead Line** on the left edge, the game ends immediately.
 
-### 4. Termination
-- If any word's left-most character's $x$-coordinate becomes $\le 5$, the game immediately halts and renders a stylized, slanted **GAME OVER** screen.
+After a game over, press **Y** to play again or **ESC** to exit.
 
 ---
 
-## 🤖 Section 7: Use of Large Language Models (LLM)
+## Example Interaction
 
-In accordance with Section 7 of the Term Project Specification, here is the required experience report on working with the LLM:
+The game shows a start screen. The player presses any key.
 
-### 1. What the LLM was used for:
-- Designing the game loop architecture in F#, utilizing non-blocking asynchronous console input reads (`Console.KeyAvailable`).
-- Devising a double-buffered custom text rendering engine to eliminate console flicker, drawing directly to specific cursor positions.
-- Crafting dynamic particle systems for the circular explosion effect and formatting this comprehensive `README.md`.
-- Making a Word Pool for Game.
-- Making a Game Over Screen art.
+A word `fsharp` appears at the right side of the screen and drifts left. The player types `f`, `s`, `h`, `a`, `r`, `p` — the input buffer at the bottom shows `INPUT: fsharp_` — then presses **Enter**. An arrow launches from the left at twice the word's speed, flies across the screen, and destroys `fsharp` in a particle explosion. The score increases.
 
-### 2. What had to be manually changed or reprompted:
-- **Wave Boundary Collision:** Initially, the wave pattern amplitude caused some words to move too close to the upper/lower status bars. We had to adjust the spawn height bounds ($y \in [4, 17]$) and damp the sine wave amplitude to $2.0$ to ensure perfect visibility.
-- **Collision Precision:** The projectile collision check required tuning to ensure that fast-moving words and projectiles didn't pass through each other between frames. We changed it from an exact coordinate match to a threshold check ($x_{\text{proj}} \ge x_{\text{word}}$).
+As time passes, words spawn faster and move quicker. A word `lambda` slips through untouched and reaches the dead line. The game halts and displays:
 
-### 3. The main point that the LLM was not able to do correctly:
-- **CLI Terminal Sizing & Buffer Sync:** The LLM initially assumed a standard terminal resize event listener would work, but standard .NET CLI resizing behaves differently across macOS and Windows. We had to enforce hardcoded grid boundaries ($80 \times 24$) and handle out-of-bounds rendering manually to prevent terminal cursor overflow crashes on standard macOS terminals.
+```
+  GAME OVER
+  FINAL SCORE: 42 points
+  SURVIVED TIME: 38.2 seconds
+  Press [Y] to play again or [ESC] to quit
+```
 
 ---
 
-## 📝 Requirement Changes and Justification
+## Requirements
 
-As permitted under **Section 4.2 (Final Submission)** of the Project Specification, we have recorded the following requirement change from the initial proposal:
+The following requirements define the observable, testable behavior of the game. Each item can be verified by running the game.
 
-| Planned Feature (Proposal) | Implemented Feature (Final) | Justification |
+1. Words appear at the right boundary (x = 80) at a random vertical position between y = 4 and y = 17.
+2. Each word moves left at velocity v = 3 + (t / 10) × 0.5 chars/sec, where t is elapsed seconds. A word's vertical position never changes after spawning.
+3. Words spawn at rate R = 0.5 + (t / 20) × 0.5 words/sec — that is, one word every 1/R seconds.
+4. The player types into an input buffer shown at the bottom of the screen. Pressing **Enter** submits the buffer.
+5. If the submitted buffer exactly matches an active word, an arrow (`---->`) fires from x = 5 at the same row as the matched word and the buffer clears.
+6. The arrow travels right at 2v (double the current word speed).
+7. When the arrow's x-coordinate reaches the word's x-coordinate, the word is eliminated and a circular particle explosion plays at that position.
+8. Score increases by ΔS = L × R on each elimination, where L is the word's character count and R is the current spawn rate.
+9. A Dead Line is drawn at x = 5. If any word's leftmost character reaches x ≤ 5, the game ends immediately and a GAME OVER screen shows the final score and time survived.
+10. Current score and elapsed time are displayed on screen throughout the game.
+11. On launch, a start screen shows the game title, rules, and key bindings. The game begins only after the player presses any key.
+12. After GAME OVER, pressing **Y** restarts the game from the beginning; pressing **ESC** exits the program.
+
+---
+
+## Requirement Changes
+
+As permitted under Section 4.2 of the project specification, the following requirements were changed from the initial proposal, each with justification.
+
+| Planned (Proposal) | Implemented (Final) | Justification |
 |:---|:---|:---|
-| **Sine-wave Movement Pathing** (Words move leftward in a wavy pattern) | **Linear Movement Pathing** (Words move leftward in a straight horizontal line) | In playtesting, the sine-wave wiggle made characters fluctuate too rapidly in standard low-refresh console terminals. This made words extremely difficult to read and type accurately in a fast-paced environment, severely degrading playability. Changing to a clean, straight horizontal path ensures the game is highly playable, fair, and focuses on core typing skill while still retaining full graphical integrity. |
-| **Word Speed** $v = 5 + \frac{\text{Time}}{10} \times 0.5$ | $v = 3 + \frac{\text{Time}}{10} \times 0.5$ | The initial speed of 5 chars/sec made the game start too difficult, leaving the player almost no reaction time before words crossed the deadline. Reducing the base speed to 3 chars/sec provides a more accessible early game while preserving the same difficulty scaling curve. Projectile speed remains 2v (consistent with the requirement). |
-| **Spawn Rate** $R = 1 + \frac{\text{Time}}{10} \times 0.5$ | $R = 0.5 + \frac{\text{Time}}{20} \times 0.5$ | A starting rate of 1 word/sec combined with the revised word speed created too much simultaneous clutter, especially at higher word lengths. Reducing the base rate to 0.5 words/sec and slowing the ramp gives the player time to clear existing words before new ones pile up, resulting in a fairer and more enjoyable progression. |
+| Sine-wave movement — words move left in a wavy vertical pattern | Linear movement — words move left in a straight horizontal line | In testing, the wave motion made characters shift vertically too fast on standard console refresh rates, making words nearly impossible to read mid-motion. Straight movement preserves full playability and typing focus. |
+| Word speed: v = 5 + (t / 10) × 0.5 | v = 3 + (t / 10) × 0.5 | A base speed of 5 chars/sec left almost no reaction time at the start. Lowering the base to 3 provides a fair early game while keeping the same scaling curve. Projectile speed remains 2v. |
+| Spawn rate: R = 1 + (t / 10) × 0.5 | R = 0.5 + (t / 20) × 0.5 | A starting rate of 1 word/sec combined with the higher speed flooded the screen too quickly. A lower base rate and slower ramp gives the player time to clear words before new ones pile up. |
+
+---
+
+## Use of Large Language Models
+
+In accordance with Section 7 of the project specification:
+
+**What the LLM was used for:**
+- Designing the game loop architecture using non-blocking input reads (`Console.KeyAvailable`) and a fixed-interval update-render cycle.
+- Building a double-buffered terminal renderer to eliminate screen flicker.
+- Generating the particle explosion system and ASCII art for the GAME OVER and start screens.
+- Assembling the word pool and writing unit tests for the core formulas (`calcSpeed`, `calcSpawnRate`, `calcScore`) and spawn placement logic (`selectSafeSpawnY`).
+
+**What had to be manually changed or reprompted:**
+- **Spawn height bounds:** The LLM initially let words spawn at any row, causing overlap with the status bars. The valid range had to be clamped to y ∈ [4, 17] manually.
+- **Collision check:** The first version used an exact x-coordinate match, which caused fast-moving words and arrows to pass through each other between frames. It was changed to a threshold check (x_proj ≥ x_word).
+
+**What the LLM was not able to do correctly:**
+- **Terminal buffer sizing on macOS:** The LLM assumed a standard resize event API would work, but .NET console resizing behaves differently on macOS versus Windows. The grid had to be hardcoded to 80 × 24 and all cursor writes clamped manually to prevent overflow crashes.
+
+
