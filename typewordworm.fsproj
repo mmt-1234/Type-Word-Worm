@@ -6,6 +6,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="GameTypes.fs" />
+    <Compile Include="GameConfig.fs" />
+    <Compile Include="GameInput.fs" />
+    <Compile Include="GameLogic.fs" />
+    <Compile Include="GameRender.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 
