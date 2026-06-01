@@ -37,7 +37,7 @@ In **Type Word Worm**, you must defend your boundary from the invading worms (wo
    ```bash
    dotnet run
    ```
-4. To play, make sure your terminal window is expanded to at least **85 columns** and **25 rows** for the best visual experience.
+4. To play, make sure your terminal window is expanded to at least **85 columns** and **25 rows** for the best visual experience. Resize your terminal window for same experience. 
 
 ---
 
