@@ -6,12 +6,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="GameTypes.fs" />
-    <Compile Include="GameConfig.fs" />
-    <Compile Include="GameInput.fs" />
-    <Compile Include="GameLogic.fs" />
-    <Compile Include="GameRender.fs" />
-    <Compile Include="Program.fs" />
+    <Compile Include="TYPEWORDWORM/GameTypes.fs" />
+    <Compile Include="TYPEWORDWORM/GameConfig.fs" />
+    <Compile Include="TYPEWORDWORM/GameInput.fs" />
+    <Compile Include="TYPEWORDWORM/GameLogic.fs" />
+    <Compile Include="TYPEWORDWORM/GameRender.fs" />
+    <Compile Include="TYPEWORDWORM/Program.fs" />
   </ItemGroup>
 
 </Project>
